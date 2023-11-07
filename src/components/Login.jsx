@@ -33,7 +33,6 @@ function Login() {
   const [apiPassword, setApiPassword] = useState(""); // To store the password fetched from the API
 
   useEffect(() => {
-    // Fetch the email and password from the API
     fetch("https://user-0ahr.onrender.com/user")
       .then((response) => response.json())
       .then((data) => {
@@ -43,8 +42,7 @@ function Login() {
       .catch((error) => {
         console.error("API fetch error:", error);
       });
-  }, []); // Fetch email and password when the component mounts
-
+  }, []);
   const handleLogin = () => {
     if (email === apiEmail && password === apiPassword) {
       navigate("/car-detail");

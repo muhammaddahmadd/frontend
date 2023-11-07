@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import { useState, useRef } from "react";
 import {
   Container,
   Paper,
@@ -35,9 +35,7 @@ const PictureInputContainer = styled("div")(({ theme }) => ({
   marginTop: theme.spacing(2),
 }));
 
-const ButtonStyled = styled(Button)(({ theme }) => ({
-  // Your styles here
-}));
+const ButtonStyled = styled(Button)(({ theme }) => ({}));
 
 export default function CarDetail() {
   const [pictures, setPictures] = useState([]);
@@ -47,21 +45,23 @@ export default function CarDetail() {
   const [maxPictures, setMaxPictures] = useState(1); // Default to 1
   const [submissionMessage, setSubmissionMessage] = useState(""); // Submission message state
   const fileInputRef = useRef(null); // Create a ref for the file input
+  const [selectedFileName, setSelectedFileName] = useState(""); // State to track the selected file name
 
   const handleDeletePicture = (index) => {
-    // Remove picture at the given index from the pictures array
     const updatedPictures = [...pictures];
     updatedPictures.splice(index, 1);
     setPictures(updatedPictures);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+      setSelectedFileName("");
+    }
   };
 
   const handleMaxPicturesChange = (e) => {
     const selectedMaxPictures = parseInt(e.target.value, 10);
     setMaxPictures(selectedMaxPictures);
 
-    // Ensure the number of pictures matches the selected maximum
     if (pictures.length > selectedMaxPictures) {
-      // If there are more pictures than the selected max, remove the extra pictures.
       const updatedPictures = pictures.slice(0, selectedMaxPictures);
       setPictures(updatedPictures);
     }
@@ -69,12 +69,8 @@ export default function CarDetail() {
 
   const handlePriceChange = (e) => {
     const newPrice = parseFloat(e.target.value);
-    // Ensure that the price is always greater than 0
     if (!isNaN(newPrice) && newPrice > 0) {
       setPrice(newPrice);
-    } else {
-      // Optionally, you can display an error message or prevent setting a non-positive price.
-      // For simplicity, this example does nothing in case of an invalid input.
     }
   };
 
@@ -93,18 +89,17 @@ export default function CarDetail() {
     if (!isInputValid()) {
       alert("Please fill in all inputs correctly.");
     } else {
-      // Submission is successful
       setSubmissionMessage("Submission successful");
-      // Reset the fields
       setCarModel("");
       setPrice("");
       setPhoneNumber("");
       setMaxPictures(1);
       setPictures([]);
-      // Clear the file input value
       if (fileInputRef.current) {
         fileInputRef.current.value = "";
       }
+
+      setSelectedFileName("");
     }
   };
 
@@ -173,6 +168,13 @@ export default function CarDetail() {
             </div>
           ))}
         </PictureInputContainer>
+        {selectedFileName && (
+          <div className="mt-2">
+            <Typography variant="subtitle1">
+              Selected File: {selectedFileName}
+            </Typography>
+          </div>
+        )}
         <input
           type="file"
           accept="image/*"
@@ -190,6 +192,14 @@ export default function CarDetail() {
             }
 
             setPictures([...pictures, ...newPictures]);
+
+            // Set the selectedFileName based on the uploaded file
+            setSelectedFileName(newPictures[0].name);
+
+            // Clear the file input value after a file is uploaded
+            if (fileInputRef.current) {
+              fileInputRef.current.value = "";
+            }
           }}
           ref={fileInputRef} // Set the ref for the file input
         />
