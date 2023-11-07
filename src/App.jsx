@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"; // Import Routes and Route
-import CarDetail from "./CarDetail";
-import Login from "./Login";
+import CarDetail from "./components/CarDetail";
+import Login from "./components/Login";
 
 function App() {
   return (

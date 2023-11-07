@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   Container,
   Paper,
@@ -45,6 +45,7 @@ export default function CarDetail() {
   const [price, setPrice] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [maxPictures, setMaxPictures] = useState(1); // Default to 1
+  const [submissionMessage, setSubmissionMessage] = useState(""); // Submission message state
 
   const handleDeletePicture = (index) => {
     // Remove picture at the given index from the pictures array
@@ -90,7 +91,15 @@ export default function CarDetail() {
     // Validate the inputs
     if (!isInputValid()) {
       alert("Please fill in all inputs correctly.");
-      return;
+    } else {
+      // Submission is successful
+      setSubmissionMessage("Submission successful");
+      // Reset the fields
+      setCarModel("");
+      setPrice("");
+      setPhoneNumber("");
+      setMaxPictures(1);
+      setPictures([]);
     }
   };
 
@@ -130,7 +139,6 @@ export default function CarDetail() {
           </Grid>
           <Grid item xs={12}>
             <Select
-              // label=" Number of Pictures"
               fullWidth
               value={maxPictures}
               onChange={handleMaxPicturesChange}
@@ -190,6 +198,12 @@ export default function CarDetail() {
             Submit
           </ButtonStyled>
         </div>
+        {/* Display the submission message */}
+        {submissionMessage && (
+          <div className="text-green-600 font-bold text-center mt-3">
+            {submissionMessage}
+          </div>
+        )}
       </PaperStyled>
     </CenteredContainer>
   );
