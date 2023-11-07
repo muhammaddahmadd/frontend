@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   Container,
   Paper,
@@ -46,6 +46,7 @@ export default function CarDetail() {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [maxPictures, setMaxPictures] = useState(1); // Default to 1
   const [submissionMessage, setSubmissionMessage] = useState(""); // Submission message state
+  const fileInputRef = useRef(null); // Create a ref for the file input
 
   const handleDeletePicture = (index) => {
     // Remove picture at the given index from the pictures array
@@ -100,6 +101,10 @@ export default function CarDetail() {
       setPhoneNumber("");
       setMaxPictures(1);
       setPictures([]);
+      // Clear the file input value
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
     }
   };
 
@@ -186,6 +191,7 @@ export default function CarDetail() {
 
             setPictures([...pictures, ...newPictures]);
           }}
+          ref={fileInputRef} // Set the ref for the file input
         />
         <div className="mt-3">
           <ButtonStyled
