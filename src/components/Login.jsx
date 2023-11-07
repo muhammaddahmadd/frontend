@@ -43,6 +43,7 @@ function Login() {
         console.error("API fetch error:", error);
       });
   }, []);
+
   const handleLogin = () => {
     if (email === apiEmail && password === apiPassword) {
       navigate("/car-detail");
@@ -50,7 +51,16 @@ function Login() {
       setError("Invalid credentials");
     }
   };
+
+  // Function to handle key presses
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      handleLogin();
+    }
+  };
+
   console.log(email, password);
+
   return (
     <CenteredContainer>
       <PaperStyled elevation={3}>
@@ -66,6 +76,7 @@ function Login() {
               fullWidth
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              onKeyPress={handleKeyPress}
             />
           </Grid>
           <Grid item xs={12}>
@@ -75,6 +86,7 @@ function Login() {
               fullWidth
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              onKeyPress={handleKeyPress}
             />
           </Grid>
         </Grid>
